@@ -11,3 +11,26 @@ class Collection(models.Model):
     class Meta:
         verbose_name_plural = "دسته بندی ها"
         verbose_name = "دسته بندی"
+
+
+class Product(models.Model):
+
+    title = models.CharField(max_length=31, verbose_name="نام")
+
+    unit_price = models.DecimalField(max_digits=15, decimal_places=3, verbose_name="قیمت")
+    discount_percentage = models.DecimalField(blank=True, max_digits=5, decimal_places=2, default=0.0,
+                                              verbose_name="درصد تخفیف")
+
+    inventory = models.PositiveSmallIntegerField(default=0, blank=True, verbose_name="تعداد موجودی")
+    is_available = models.BooleanField(default=True, verbose_name="موجود بودن")
+
+    is_featured = models.BooleanField(default=False, null=True, verbose_name="پیشنهادی بودن")
+
+    description = models.CharField(max_length=255, blank=True, verbose_name="توضیحات")
+
+    created_at = models.CharField(max_length=31, null=True, blank=True, verbose_name="زمان ثبت")
+    updated_at = models.CharField(max_length=31, null=True, blank=True, verbose_name="زمان به روزرسانی")
+
+    class Meta:
+        verbose_name_plural = "کالاها"
+        verbose_name = "کالا"
