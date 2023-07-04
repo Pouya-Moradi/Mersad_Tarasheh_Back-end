@@ -1,3 +1,10 @@
 from django.db import models
 
-# Create your models here.
+
+class Comment(models.Model):
+
+    content = models.CharField(max_length=1023, verbose_name="متن نظر")
+
+    is_approved = models.BooleanField(default=False, null=False, blank=False, verbose_name="وضعیت تایید نظر")
+
+    created_at = models.CharField(max_length=31, null=True, blank=True, verbose_name="زمان ثبت")
