@@ -16,3 +16,5 @@ class Comment(models.Model):
 class Rating(models.Model):
 
     score = models.PositiveSmallIntegerField(choices=range(1, 6), default=1, verbose_name="امتیاز")
+
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='ratings', verbose_name="کالا")
