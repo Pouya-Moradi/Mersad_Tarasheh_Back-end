@@ -1,3 +1,8 @@
-from django.shortcuts import render
+from rest_framework.viewsets import ModelViewSet
+from .models import Order, OrderItem
+from .serializers import OrderSerializer, OrderItemSerializer
 
-# Create your views here.
+
+class OrderViewSet(ModelViewSet):
+    queryset = Order
+    serializer_class = OrderSerializer
