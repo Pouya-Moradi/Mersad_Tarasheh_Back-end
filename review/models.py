@@ -10,7 +10,7 @@ class Comment(models.Model):
 
     is_approved = models.BooleanField(default=False, null=False, blank=False, verbose_name='وضعیت تایید نظر')
 
-    created_at = models.CharField(max_length=31, null=True, blank=True, verbose_name='زمان ثبت')
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name='زمان ثبت')
 
 
 class Rating(models.Model):

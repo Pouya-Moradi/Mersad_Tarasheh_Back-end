@@ -26,5 +26,5 @@ class Product(models.Model):
     collection = models.ForeignKey(Collection, on_delete=models.PROTECT, related_name='products',
                                    verbose_name='دسته بندی')
 
-    created_at = models.CharField(max_length=31, null=True, blank=True, verbose_name='زمان ثبت')
-    updated_at = models.CharField(max_length=31, null=True, blank=True, verbose_name='زمان به روزرسانی')
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name='زمان ثبت')
+    updated_at = models.DateTimeField(auto_now=True, verbose_name='زمان به روزرسانی')
