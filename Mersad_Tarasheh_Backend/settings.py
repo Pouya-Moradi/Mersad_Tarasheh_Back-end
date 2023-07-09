@@ -82,8 +82,11 @@ WSGI_APPLICATION = 'Mersad_Tarasheh_Backend.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'mersad_tarasheh_db',
+        'HOST': 'localhost',
+        'USER': 'root',
+        'PASSWORD': 'pouya'
     }
 }
 
