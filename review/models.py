@@ -12,4 +12,4 @@ class Comment(models.Model):
 
 class Rating(models.Model):
 
-    score = models.PositiveSmallIntegerField(choices=range(1, 6), default=1, verbose_name="امتیاز")
+    score = models.PositiveSmallIntegerField(choices=[(i, i) for i in range(1, 6)], default=1, verbose_name="امتیاز")
