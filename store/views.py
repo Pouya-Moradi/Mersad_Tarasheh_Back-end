@@ -9,7 +9,7 @@ class CollectionViewSet(ModelViewSet):
 
 
 class ProductViewSet(ModelViewSet):
-    queryset = Product.objects.all()
+    queryset = Product.objects.prefetch_related('product_images').all()
     serializer_class = ProductSerializer
 
 
