@@ -28,3 +28,8 @@ class Product(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='زمان ثبت')
     updated_at = models.DateTimeField(auto_now=True, verbose_name='زمان به روزرسانی')
+
+
+class ProductImage(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='product_images')
+    image = models.ImageField(upload_to='store/images')
