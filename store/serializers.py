@@ -8,13 +8,6 @@ class CollectionSerializer(serializers.ModelSerializer):
         fields = ['id', 'title', 'created_at', 'updated_at']
 
 
-class ProductSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Product
-        fields = ['id', 'title', 'description', 'unit_price', 'discount_percentage', 'is_available', 'collection',
-                  'created_at', 'updated_at']
-
-
 class ProductImageSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         product_id = self.context['product_id']
@@ -23,3 +16,13 @@ class ProductImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProductImage
         fields = ['id', 'image']
+
+
+class ProductSerializer(serializers.ModelSerializer):
+    product_images = ProductImageSerializer(many=True)
+
+    class Meta:
+        model = Product
+        fields = ['id', 'title', 'description', 'unit_price', 'discount_percentage', 'is_available', 'collection',
+                  'product_images',
+                  'created_at', 'updated_at']
