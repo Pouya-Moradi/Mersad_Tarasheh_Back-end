@@ -14,7 +14,7 @@ class Order(models.Model):
         (PAYMENT_STATUS_FAILED, 'Failed')
     ]
     payment_status = models.CharField(max_length=1, choices=PAYMENT_STATUS_CHOICES, default=PAYMENT_STATUS_PENDING)
-    created_at = models.DateTimeField(auto_now_add=True, verbose_name='زمان ثبت')
+    created_at = models.DateTimeField(auto_now_add=True)
 
 
 class OrderItem(models.Model):
