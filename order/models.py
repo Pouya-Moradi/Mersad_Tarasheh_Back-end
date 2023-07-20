@@ -1,8 +1,10 @@
 from django.db import models
 from store.models import Product
+from authentication.models import Customer
 
 
 class Order(models.Model):
+    customer = models.OneToOneField(Customer, on_delete=models.PROTECT)
     PAYMENT_STATUS_PENDING = 'P'
     PAYMENT_STATUS_COMPLETED = 'C'
     PAYMENT_STATUS_FAILED = 'F'
