@@ -1,8 +1,11 @@
-from rest_framework.routers import DefaultRouter
+from rest_framework_nested import routers
 from .views import CartViewSet, CartItemViewSet
 
-router = DefaultRouter()
+router = routers.DefaultRouter()
 router.register('carts', CartViewSet)
-router.register('cart-items', CartItemViewSet, basename='cart-items')
+carts_router = routers.NestedDefaultRouter(router, 'carts', lookup='cart')
+carts_router.register('cart-items', CartItemViewSet, basename='cart-items')
+# cart_router = routers.NestedDefaultRouter(router, 'carts', lookup='cart')
+# router.register('cart-items', CartItemViewSet, basename='cart-items')
 
-urlpatterns = router.urls
+urlpatterns = router.urls + carts_router.urls
