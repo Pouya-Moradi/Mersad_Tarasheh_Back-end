@@ -5,7 +5,7 @@ from authentication.models import Customer
 
 class Order(models.Model):
 
-    customer = models.OneToOneField(Customer, on_delete=models.PROTECT)
+    customer = models.OneToOneField(Customer, on_delete=models.PROTECT, related_name='orders')
 
     PAYMENT_STATUS_PENDING = 'P'
     PAYMENT_STATUS_COMPLETED = 'C'
