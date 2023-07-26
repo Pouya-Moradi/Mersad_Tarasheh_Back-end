@@ -24,7 +24,6 @@ class UserAdmin(BaseUserAdmin):
 class CustomerAdmin(admin.ModelAdmin):
     autocomplete_fields = ['user']
     list_display = ['first_name', 'last_name', 'display_name', 'state', 'city', 'orders_count', 'created_at', 'updated_at']
-    list_editable = []
     list_select_related = ['user']
     ordering = ['user__first_name', 'user__last_name']
     search_fields = ['user__first_name__istartswith', 'user__last_name__istartswith']
@@ -39,7 +38,27 @@ class CustomerAdmin(admin.ModelAdmin):
         )
         return format_html('<a href="{}">{}</a>', url, customer.orders_count)
 
+    # @admin.display(ordering='comments_count')
+    # def comments_count(self, customer):
+    #     url = reverse('admin:review_comment_changelist') + '?' + urlencode(
+    #         {
+    #             'customer__id': str(customer.id)
+    #         }
+    #     )
+    #     return format_html('<a href="{}">{}</a>', url, customer.comments_count)
+    #
+    # @admin.display(ordering='ratings_count')
+    # def ratings_count(self, customer):
+    #     url = reverse('admin:review_rating_changelist') + '?' + urlencode(
+    #         {
+    #             'customer__id': str(customer.id)
+    #         }
+    #     )
+    #     return format_html('<a href="{}">{}</a>', url, customer.ratings_count)
+
     def get_queryset(self, request):
         return super().get_queryset(request).annotate(
-            orders_count = Count('orders')
+            orders_count=Count('orders'),
+            # comments_count=Count('comments'),
+            # ratings_count=Count('ratings')
         )
