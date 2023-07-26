@@ -8,6 +8,7 @@ from .models import User, Customer
 
 @admin.register(User)
 class UserAdmin(BaseUserAdmin):
+    search_fields = ['username']
     add_fieldsets = (
         (
             None,
@@ -21,6 +22,7 @@ class UserAdmin(BaseUserAdmin):
 
 @admin.register(Customer)
 class CustomerAdmin(admin.ModelAdmin):
+    autocomplete_fields = ['user']
     list_display = ['first_name', 'last_name', 'display_name', 'state', 'city', 'orders_count', 'created_at', 'updated_at']
     list_editable = []
     list_select_related = ['user']
