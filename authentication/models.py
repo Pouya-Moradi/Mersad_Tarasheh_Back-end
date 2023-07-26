@@ -37,16 +37,16 @@ class Customer(models.Model):
     def last_name(self):
         return self.user.last_name
 
-    # this method to generate profile when user is created
-    @receiver(post_save, sender=User)
-    def create_user_profile(sender, instance, created, **kwargs):
-        if created:
-            Customer.objects.create(user=instance)
-
-    # this method to update profile when user is updated
-    @receiver(post_save, sender=User)
-    def save_user_profile(sender, instance, **kwargs):
-        instance.profile.save()
+    # # this method to generate profile when user is created
+    # @receiver(post_save, sender=User)
+    # def create_user_profile(sender, instance, created, **kwargs):
+    #     if created:
+    #         Customer.objects.create(user=instance)
+    #
+    # # this method to update profile when user is updated
+    # @receiver(post_save, sender=User)
+    # def save_user_profile(sender, instance, **kwargs):
+    #     instance.profile.save()
 
     class Meta:
         ordering = ['user__first_name', 'user__last_name']
