@@ -3,7 +3,8 @@ from store.models import Product
 
 
 class Comment(models.Model):
-    content = models.CharField(max_length=1023)
+
+    content = models.CharField(max_length=1024)
 
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='comments')
 
@@ -13,6 +14,9 @@ class Comment(models.Model):
 
 
 class Rating(models.Model):
+
     score = models.PositiveSmallIntegerField(choices=[(i, i) for i in range(1, 6)], default=1)
 
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='ratings')
+
+    created_at = models.DateTimeField(auto_now_add=True)

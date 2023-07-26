@@ -1,12 +1,19 @@
 from django.db import models
+from django.utils import timezone
 
 
 class Collection(models.Model):
 
     title = models.CharField(max_length=32)
 
-    created_at = models.CharField(max_length=31, null=True, blank=True)
-    updated_at = models.CharField(max_length=31, null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        ordering = ['title']
 
 
 class Product(models.Model):
@@ -18,14 +25,20 @@ class Product(models.Model):
     discount_percentage = models.DecimalField(blank=True, max_digits=5, decimal_places=2, default=0.0)
 
     inventory = models.PositiveSmallIntegerField(default=0, blank=True)
-    is_available = models.BooleanField(default=True)
+    is_available = models.BooleanField(default=False)
 
-    is_featured = models.BooleanField(default=False, null=True)
+    is_featured = models.BooleanField(default=False)
 
     collection = models.ForeignKey(Collection, on_delete=models.PROTECT, related_name='products')
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        ordering = ['title']
 
 
 class ProductImage(models.Model):
