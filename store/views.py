@@ -1,3 +1,6 @@
+from django.shortcuts import get_object_or_404
+from rest_framework import status
+from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 from .models import Collection, Product, ProductImage
 from .serializers import CollectionSerializer, ProductSerializer, ProductImageSerializer
@@ -6,6 +9,14 @@ from .serializers import CollectionSerializer, ProductSerializer, ProductImageSe
 class CollectionViewSet(ModelViewSet):
     queryset = Collection.objects.all()
     serializer_class = CollectionSerializer
+
+    def __delete__(self, request, pk):
+        collection = get_object_or_404(Collection, pk=pk)
+        if collection.products.count() > 0:
+            return Response({'error': 'Collection contains some products and cannot be deleted'})
+        collection.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
 
 
 class ProductViewSet(ModelViewSet):

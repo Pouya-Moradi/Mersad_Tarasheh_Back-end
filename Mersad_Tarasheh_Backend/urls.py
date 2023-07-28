@@ -23,6 +23,7 @@ from cart.views import CartViewSet, CartItemViewSet
 from store.views import CollectionViewSet, ProductViewSet, ProductImageViewSet
 from review.views import CommentViewSet, RatingViewSet
 from order.views import OrderViewSet, OrderItemViewSet
+from store.urls import router as product_router
 
 
 admin.site.site_header = 'Mersad Tarasheh Admin'
@@ -34,13 +35,15 @@ router.register('carts', CartViewSet)
 carts_router = routers.NestedDefaultRouter(router, 'carts', lookup='cart')
 carts_router.register('cart-items', CartItemViewSet, basename='cart-items')
 
+router.registry.extend(product_router.registry)
+
 
 router.register('collections', CollectionViewSet)
-router.register('products', ProductViewSet)
-products_router = routers.NestedDefaultRouter(router, 'products', lookup='product')
-products_router.register('product-comments', CommentViewSet, basename='product-comments')
-products_router.register('product-ratings', RatingViewSet, basename='product-ratings')
-products_router.register('product-images', ProductImageViewSet, basename='product-images')
+# router.register('products', ProductViewSet)
+# products_router = routers.NestedDefaultRouter(router, 'products', lookup='product')
+# products_router.register('product-comments', CommentViewSet, basename='product-comments')
+# products_router.register('product-ratings', RatingViewSet, basename='product-ratings')
+# products_router.register('product-images', ProductImageViewSet, basename='product-images')
 
 
 router.register('orders', OrderViewSet, basename='orders')
@@ -54,6 +57,7 @@ urlpatterns = [
     # path('order/', include('order.urls')),
     # path('review/', include('review.urls')),
     # path('store/', include('store.urls')),
+    path('', router.urls)
 ] + router.urls + carts_router.urls
 
 if settings.DEBUG:
