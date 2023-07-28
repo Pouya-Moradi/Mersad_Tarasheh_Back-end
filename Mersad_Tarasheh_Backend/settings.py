@@ -39,15 +39,16 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'corsheaders',
 
+    'djoser',
+    'corsheaders',
     'rest_framework',
 
+    'authentication',
     'cart',
     'order',
     'review',
-    'store',
-    'authentication'
+    'store'
 ]
 
 MIDDLEWARE = [
@@ -154,3 +155,14 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'authentication.User'
 
 TIME_ZONE = 'Asia/Tehran'
+
+REST_FRAMEWORK = {
+    'COERCE_DECIMAL_TO_STRING': False,
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+}
+
+SIMPLE_JWT = {
+   'AUTH_HEADER_TYPES': ('JWT',),
+}

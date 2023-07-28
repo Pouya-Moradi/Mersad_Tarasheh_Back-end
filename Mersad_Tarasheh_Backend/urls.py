@@ -52,12 +52,14 @@ orders_router.register('orde-items', OrderItemViewSet, basename='order-items')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('auth/', include('djoser.urls')),
+    path('auth/', include('djoser.urls.jwt')),
     # path('authentication/', include('authentication.urls')),
     # path('carts/', include('cart.urls')),
     # path('order/', include('order.urls')),
     # path('review/', include('review.urls')),
     # path('store/', include('store.urls')),
-    path('', router.urls)
+    # path('', router.urls)
 ] + router.urls + carts_router.urls
 
 if settings.DEBUG:
