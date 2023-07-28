@@ -34,7 +34,7 @@ class ProductImageViewSet(ModelViewSet):
         return ProductImage.objects.filter(product_id=self.kwargs['product_pk'])
 
 
-class CommentViewSet(ModelViewSet):
+class ProductCommentViewSet(ModelViewSet):
     serializer_class = ProductCommentSerializer
 
     def get_queryset(self):
@@ -44,7 +44,7 @@ class CommentViewSet(ModelViewSet):
         return {'product_id': self.kwargs['product_pk']}
 
 
-class RatingViewSet(ModelViewSet):
+class ProductRatingViewSet(ModelViewSet):
     serializer_class = ProductRatingSerializer
 
     def get_queryset(self):
