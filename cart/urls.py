@@ -5,7 +5,5 @@ router = routers.DefaultRouter()
 router.register('carts', CartViewSet)
 carts_router = routers.NestedDefaultRouter(router, 'carts', lookup='cart')
 carts_router.register('cart-items', CartItemViewSet, basename='cart-items')
-# cart_router = routers.NestedDefaultRouter(router, 'carts', lookup='cart')
-# router.register('cart-items', CartItemViewSet, basename='cart-items')
 
 urlpatterns = router.urls + carts_router.urls
