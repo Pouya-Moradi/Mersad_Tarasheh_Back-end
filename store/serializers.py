@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Collection, Product, ProductImage
+from .models import Collection, Product, ProductImage, ProductComment, ProductRating
 
 
 class CollectionSerializer(serializers.ModelSerializer):
@@ -33,3 +33,25 @@ class SimpleProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
         fields = ['id', 'title', 'unit_price']
+
+
+class ProductCommentSerializer(serializers.ModelSerializer):
+
+    def create(self, validated_data):
+        product_id = self.context['product_id']
+        return ProductComment.objects.create(product_id=product_id, **validated_data)
+
+    class Meta:
+        model = ProductComment
+        fields = ['id', 'content']
+
+
+class ProductRatingSerializer(serializers.ModelSerializer):
+
+    def create(self, validated_data):
+        product_id = self.context['product_id']
+        return ProductRating.objects.create(product_id=product_id, **validated_data)
+
+    class Meta:
+        model = ProductRating
+        fields = ['id', 'score']

@@ -2,8 +2,9 @@ from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
-from .models import Collection, Product, ProductImage
-from .serializers import CollectionSerializer, ProductSerializer, ProductImageSerializer
+from .models import Collection, Product, ProductImage, ProductComment, ProductRating
+from .serializers import CollectionSerializer, ProductSerializer, ProductImageSerializer,\
+    ProductCommentSerializer, ProductRatingSerializer
 
 
 class CollectionViewSet(ModelViewSet):
@@ -16,7 +17,6 @@ class CollectionViewSet(ModelViewSet):
             return Response({'error': 'Collection contains some products and cannot be deleted'})
         collection.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-
 
 
 class ProductViewSet(ModelViewSet):
@@ -32,3 +32,24 @@ class ProductImageViewSet(ModelViewSet):
 
     def get_queryset(self):
         return ProductImage.objects.filter(product_id=self.kwargs['product_pk'])
+
+
+class CommentViewSet(ModelViewSet):
+    serializer_class = ProductCommentSerializer
+
+    def get_queryset(self):
+        return ProductComment.objects.filter(product_id=self.kwargs['product_pk'])
+
+    def get_serializer_context(self):
+        return {'product_id': self.kwargs['product_pk']}
+
+
+class RatingViewSet(ModelViewSet):
+    serializer_class = ProductRatingSerializer
+
+    def get_queryset(self):
+        return ProductRating.objects.filter(product_id=self.kwargs['product_pk'])
+
+    def get_serializer_context(self):
+        return {'product_id': self.kwargs['product_pk']}
+
