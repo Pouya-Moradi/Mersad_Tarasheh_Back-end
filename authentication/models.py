@@ -8,10 +8,10 @@ from utilities.constants import STATE_CHOICES
 
 
 class User(AbstractUser):
-    # first_name = models.CharField(max_length=150)
-    # last_name = models.CharField(max_length=150)
+    first_name = models.CharField(max_length=150)
+    last_name = models.CharField(max_length=150)
 
-    email = models.EmailField(unique=True)
+    # email = models.EmailField(unique=True)
 
     phone_number = models.CharField(unique=True, max_length=11)
 

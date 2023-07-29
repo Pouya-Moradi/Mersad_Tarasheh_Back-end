@@ -1,4 +1,4 @@
-from djoser.serializers import UserCreateSerializer as BaseUserCreateSerializer
+from djoser.serializers import UserCreateSerializer as BaseUserCreateSerializer, UserSerializer as BaseUserSerializer
 from rest_framework import serializers
 from .models import Customer
 
@@ -9,8 +9,13 @@ class UserCreateSerializer(BaseUserCreateSerializer):
 
 
 class CustomerSerializer(serializers.ModelSerializer):
-    user_id = serializers.IntegerField()
+    user_id = serializers.IntegerField(read_only=True)
 
     class Meta:
         model = Customer
         fields = ['id', 'user_id', 'display_name', 'state', 'city', 'address', 'zip_code', 'created_at', 'updated_at']
+
+
+class UserSerializer(BaseUserSerializer):
+    class Meta(BaseUserSerializer.Meta):
+        fields = ['id', 'username', 'first_name', 'last_name', 'phone_number', 'email']

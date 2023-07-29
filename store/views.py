@@ -5,11 +5,13 @@ from rest_framework.viewsets import ModelViewSet
 from .models import Collection, Product, ProductImage, ProductComment, ProductRating
 from .serializers import CollectionSerializer, ProductSerializer, ProductImageSerializer,\
     ProductCommentSerializer, ProductRatingSerializer
+from permissions import IsAdminOrReadOnly
 
 
 class CollectionViewSet(ModelViewSet):
     queryset = Collection.objects.all()
     serializer_class = CollectionSerializer
+    permission_classes = [IsAdminOrReadOnly]
 
     def __delete__(self, request, pk):
         collection = get_object_or_404(Collection, pk=pk)
@@ -22,6 +24,7 @@ class CollectionViewSet(ModelViewSet):
 class ProductViewSet(ModelViewSet):
     queryset = Product.objects.prefetch_related('product_images').all()
     serializer_class = ProductSerializer
+    permission_classes = [IsAdminOrReadOnly]
 
 
 class ProductImageViewSet(ModelViewSet):
