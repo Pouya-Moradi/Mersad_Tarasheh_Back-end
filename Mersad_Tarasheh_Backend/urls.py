@@ -20,6 +20,7 @@ from django.contrib import admin
 from django.urls import path, include
 from azbankgateways.urls import az_bank_gateways_urls
 from payments.views import go_to_gateway_view, callback_gateway_view
+from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView, SpectacularRedocView
 
 admin.site.site_header = 'Mersad Tarasheh Admin'
 admin.site.index_title = 'Admin'
@@ -37,6 +38,10 @@ urlpatterns = [
     path('bankgateways/', az_bank_gateways_urls()),
     path('go-to-gateway/', go_to_gateway_view),
     path('callback-gateway/', callback_gateway_view),
+
+    path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
+    path('api/swagger/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
+    path('api/redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
 
     # path('', include(router.urls))
 ]
