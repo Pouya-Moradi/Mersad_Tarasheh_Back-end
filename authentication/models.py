@@ -19,12 +19,12 @@ class User(AbstractUser):
 class Customer(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
-    display_name = models.CharField(max_length=64, null=True, blank=True)
+    display_name = models.CharField(max_length=64)
 
-    state = models.PositiveIntegerField(choices=STATE_CHOICES, null=True, blank=True)
-    city = models.CharField(max_length=32, null=True, blank=True)
-    address = models.CharField(max_length=256, null=True, blank=True)
-    zip_code = models.CharField(max_length=10, null=True, blank=True)
+    state = models.PositiveIntegerField(choices=STATE_CHOICES)
+    city = models.CharField(max_length=32)
+    address = models.CharField(max_length=256)
+    zip_code = models.CharField(max_length=10)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
