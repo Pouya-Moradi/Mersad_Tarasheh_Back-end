@@ -18,6 +18,8 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
+from azbankgateways.urls import az_bank_gateways_urls
+from payments.views import go_to_gateway_view, callback_gateway_view
 
 admin.site.site_header = 'Mersad Tarasheh Admin'
 admin.site.index_title = 'Admin'
@@ -31,6 +33,10 @@ urlpatterns = [
     path('customers/', include('authentication.urls')),
     path('carts/', include('cart.urls')),
     path('store/', include('store.urls')),
+
+    path('bankgateways/', az_bank_gateways_urls()),
+    path('go-to-gateway/', go_to_gateway_view),
+    path('callback-gateway/', callback_gateway_view),
 
     # path('', include(router.urls))
 ]

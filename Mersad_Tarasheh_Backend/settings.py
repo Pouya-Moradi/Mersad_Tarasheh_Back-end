@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'azbankgateways',
     'djoser',
     'corsheaders',
     'rest_framework',
@@ -48,7 +49,8 @@ INSTALLED_APPS = [
     'authentication',
     'cart',
     'order',
-    'store'
+    'store',
+    'payments'
 ]
 
 MIDDLEWARE = [
@@ -174,4 +176,64 @@ DJOSER = {
         'user_create': 'authentication.serializers.UserCreateSerializer',
         'current_user': 'authentication.serializers.UserSerializer'
     }
+}
+
+
+AZ_IRANIAN_BANK_GATEWAYS = {
+   'GATEWAYS': {
+       #بانک ملی
+       'BMI': {
+           'MERCHANT_CODE': '<YOUR MERCHANT CODE>',
+           'TERMINAL_CODE': '<YOUR TERMINAL CODE>',
+           'SECRET_KEY': '<YOUR SECRET CODE>',
+       },
+       #بانک سامان
+       'SEP': {
+           'MERCHANT_CODE': '<YOUR MERCHANT CODE>',
+           'TERMINAL_CODE': '<YOUR TERMINAL CODE>',
+       },
+       #زرین پال
+       'ZARINPAL': {
+           'MERCHANT_CODE': '<YOUR MERCHANT CODE>',
+           'SANDBOX': 0,  # 0 disable, 1 active
+       },
+       #آی دی پی
+       'IDPAY': {
+           'MERCHANT_CODE': '<YOUR MERCHANT CODE>',
+           'METHOD': 'POST',  # GET or POST
+           'X_SANDBOX': 0,  # 0 disable, 1 active
+       },
+       #زیبال
+       'ZIBAL': {
+           'MERCHANT_CODE': '<YOUR MERCHANT CODE>',
+       },
+       #باهمتا
+       'BAHAMTA': {
+           'MERCHANT_CODE': '<YOUR MERCHANT CODE>',
+       },
+       #بانک ملت
+       'MELLAT': {
+           'TERMINAL_CODE': '<YOUR TERMINAL CODE>',
+           'USERNAME': '<YOUR USERNAME>',
+           'PASSWORD': '<YOUR PASSWORD>',
+       },
+       #پی ورژن 1
+       'PAYV1': {
+           'MERCHANT_CODE': '<YOUR MERCHANT CODE>',
+           'X_SANDBOX': 0,  # 0 disable, 1 active
+       },
+   },
+   'IS_SAMPLE_FORM_ENABLE': True, # اختیاری و پیش فرض غیر فعال است
+   'DEFAULT': 'BMI',
+   'CURRENCY': 'IRR', # اختیاری
+   'TRACKING_CODE_QUERY_PARAM': 'tc', # اختیاری
+   'TRACKING_CODE_LENGTH': 16, # اختیاری
+   'SETTING_VALUE_READER_CLASS': 'azbankgateways.readers.DefaultReader', # اختیاری
+   'BANK_PRIORITIES': [
+       'BMI',
+       'SEP',
+       # and so on ...
+   ], # اختیاری
+   'IS_SAFE_GET_GATEWAY_PAYMENT': False, #اختیاری، بهتر است True بزارید.
+   'CUSTOM_APP': None, # اختیاری
 }
