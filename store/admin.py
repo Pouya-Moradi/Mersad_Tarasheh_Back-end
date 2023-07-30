@@ -5,15 +5,29 @@ from django.urls import reverse
 from .models import Collection, Product, ProductImage, ProductComment, ProductRating
 
 
+class ProductImageInline(admin.TabularInline):
+    model = ProductImage
+    readonly_fields = ['thumbnail']
+
+    def thumbnail(self, instance):
+        if instance.image.name != '':
+            return format_html(f'<img src="{instance.image.url}" class="thumbnail" />')
+        return ''
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
     autocomplete_fields = ['collection']
+    inlines = [ProductImageInline]
     list_display = ['title', 'unit_price', 'discount_percentage', 'inventory', 'is_available', 'is_featured',
                     'collection', 'created_at', 'updated_at']
     list_editable = ['unit_price', 'discount_percentage', 'inventory', 'is_available', 'is_featured',
                      'collection']
     list_filter = ['collection']
     list_per_page = 10
+
+    class Media:
+        css = {
+            'all': 'store/styles.css'
+        }
 
 
 @admin.register(Collection)
