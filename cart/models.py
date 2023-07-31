@@ -10,7 +10,7 @@ from authentication.models import Customer
 class Cart(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid4)
     # customer = models.OneToOneField(Customer, on_delete=models.CASCADE)
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name='تاریخ ایجاد')
 
     created_at_jalali = models.CharField(max_length=32, verbose_name='تاریخ شمسی ایجاد')
 
@@ -22,14 +22,20 @@ class Cart(models.Model):
 
         super().save(*args, **kwargs)
 
+    class Meta:
+        verbose_name='سبد خرید'
+        verbose_name_plural='سبدهای خرید'
+
 
 class CartItem(models.Model):
 
-    cart = models.ForeignKey(Cart, on_delete=models.CASCADE, related_name='cart_items')
+    cart = models.ForeignKey(Cart, on_delete=models.CASCADE, related_name='cart_items', verbose_name='سبد خرید')
 
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, verbose_name='محصول')
 
-    quantity = models.PositiveSmallIntegerField(validators=[MinValueValidator(1)])
+    quantity = models.PositiveSmallIntegerField(validators=[MinValueValidator(1)], verbose_name='تعداد')
 
     class Meta:
         unique_together = [['cart', 'product']]
+        verbose_name='آیتم سبد خرید'
+        verbose_name_plural='آیتم های سبد خرید'

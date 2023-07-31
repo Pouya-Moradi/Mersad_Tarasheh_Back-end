@@ -7,7 +7,7 @@ from authentication.models import Customer
 
 class Order(models.Model):
 
-    customer = models.ForeignKey(Customer, on_delete=models.PROTECT, related_name='orders')
+    customer = models.ForeignKey(Customer, on_delete=models.PROTECT, related_name='orders', verbose_name='مشتری')
 
     PAYMENT_STATUS_PENDING = 'P'
     PAYMENT_STATUS_COMPLETED = 'C'
@@ -19,10 +19,11 @@ class Order(models.Model):
         (PAYMENT_STATUS_FAILED, 'Failed')
     ]
 
-    payment_status = models.CharField(max_length=1, choices=PAYMENT_STATUS_CHOICES, default=PAYMENT_STATUS_PENDING)
+    payment_status = models.CharField(max_length=1, choices=PAYMENT_STATUS_CHOICES, default=PAYMENT_STATUS_PENDING,
+                                      verbose_name='وضعیت سفارش')
 
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name='تاریخ ایجاد')
+    updated_at = models.DateTimeField(auto_now=True, verbose_name='تاریخ به روزرسانی')
 
     created_at_jalali = models.CharField(max_length=32, verbose_name='تاریخ شمسی ایجاد')
     updated_at_jalali = models.CharField(max_length=32, verbose_name='تاریخ شمسی به روزرسانی')
@@ -40,13 +41,21 @@ class Order(models.Model):
 
         super().save(*args, **kwargs)
 
+    class Meta:
+        verbose_name='سفارش'
+        verbose_name_plural='سفارشات'
+
 
 class OrderItem(models.Model):
 
-    order = models.ForeignKey(Order, on_delete=models.PROTECT, related_name='order_items')
+    order = models.ForeignKey(Order, on_delete=models.PROTECT, related_name='order_items', verbose_name='سفارش')
 
-    product = models.ForeignKey(Product, on_delete=models.PROTECT, related_name='order_items')
+    product = models.ForeignKey(Product, on_delete=models.PROTECT, related_name='order_items', verbose_name='محصول')
 
-    quantity = models.PositiveSmallIntegerField()
+    quantity = models.PositiveSmallIntegerField(verbose_name='تعداد')
 
-    unit_price = models.DecimalField(max_digits=15, decimal_places=3)
+    unit_price = models.DecimalField(max_digits=15, decimal_places=3, verbose_name='قیمت هرواحد')
+
+    class Meta:
+        verbose_name='آیتم سفارش'
+        verbose_name_plural='آیتم های سفارش'
