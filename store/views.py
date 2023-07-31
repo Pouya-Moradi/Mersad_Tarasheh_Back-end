@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 from .models import Collection, Product, ProductImage, ProductComment, ProductRating
 from .serializers import CollectionSerializer, ProductSerializer, ProductImageSerializer,\
-    ProductCommentSerializer, ProductRatingSerializer
+    ProductCommentSerializer, ProductRatingSerializer, UpdateProductRatingSerializer
 from permissions import IsAdminOrReadOnly
 
 
@@ -48,10 +48,15 @@ class ProductCommentViewSet(ModelViewSet):
 
 
 class ProductRatingViewSet(ModelViewSet):
-    serializer_class = ProductRatingSerializer
+    http_method_names = ['get', 'post', 'patch', 'delete', 'head', 'options']
 
     def get_queryset(self):
         return ProductRating.objects.filter(product_id=self.kwargs['product_pk'])
+
+    def get_serializer_class(self):
+        if self.request.method == 'PATCH':
+            return UpdateProductRatingSerializer
+        return ProductRatingSerializer
 
     def get_serializer_context(self):
         return {'product_id': self.kwargs['product_pk']}

@@ -57,3 +57,9 @@ class ProductRatingSerializer(serializers.ModelSerializer):
         model = ProductRating
         fields = ['id', 'score', 'created_at', 'updated_at', 'created_at_jalali', 'updated_at_jalali']
         read_only_fields = ['created_at', 'updated_at', 'created_at_jalali', 'updated_at_jalali']
+
+
+class UpdateProductRatingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProductRating
+        fields = ['score']
