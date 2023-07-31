@@ -23,7 +23,9 @@ class UserAdmin(BaseUserAdmin):
 @admin.register(Customer)
 class CustomerAdmin(admin.ModelAdmin):
     autocomplete_fields = ['user']
-    list_display = ['first_name', 'last_name', 'display_name', 'state', 'city', 'orders_count', 'created_at', 'updated_at']
+    list_display = ['first_name', 'last_name', 'display_name', 'state', 'city', 'orders_count', 'created_at',
+                    'updated_at', 'created_at_jalali', 'updated_at_jalali']
+    readonly_fields = ['created_at', 'updated_at', 'created_at_jalali', 'updated_at_jalali']
     list_select_related = ['user']
     ordering = ['user__first_name', 'user__last_name']
     search_fields = ['user__first_name__istartswith', 'user__last_name__istartswith']

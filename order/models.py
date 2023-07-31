@@ -1,4 +1,6 @@
 from django.db import models
+from django.utils import timezone
+from jdatetime import datetime as jdatetime_datetime
 from store.models import Product
 from authentication.models import Customer
 
@@ -21,6 +23,22 @@ class Order(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    created_at_jalali = models.CharField(max_length=32, verbose_name='تاریخ شمسی ایجاد')
+    updated_at_jalali = models.CharField(max_length=32, verbose_name='تاریخ شمسی به روزرسانی')
+
+    def save(self, *args, **kwargs):
+        if not self.id:
+            now_local = timezone.localtime(timezone.now())
+            now_jdatetime = jdatetime_datetime.fromgregorian(datetime=now_local)
+            self.created_at_jalali = now_jdatetime.strftime('%Y/%m/%d %H:%M:%S')
+            self.updated_at_jalali = now_jdatetime.strftime('%Y/%m/%d %H:%M:%S')
+        else:
+            now_local = timezone.localtime(timezone.now())
+            now_jdatetime = jdatetime_datetime.fromgregorian(datetime=now_local)
+            self.updated_at_jalali = now_jdatetime.strftime('%Y/%m/%d %H:%M:%S')
+
+        super().save(*args, **kwargs)
 
 
 class OrderItem(models.Model):

@@ -13,12 +13,15 @@ class ProductImageInline(admin.TabularInline):
         if instance.image.name != '':
             return format_html(f'<img src="{instance.image.url}" class="thumbnail" />')
         return ''
+
+
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
     autocomplete_fields = ['collection']
     inlines = [ProductImageInline]
     list_display = ['title', 'unit_price', 'discount_percentage', 'inventory', 'is_available', 'is_featured',
-                    'collection', 'created_at', 'updated_at']
+                    'collection', 'created_at', 'updated_at', 'created_at_jalali', 'updated_at_jalali']
+    readonly_fields = ['created_at', 'updated_at', 'created_at_jalali', 'updated_at_jalali']
     list_editable = ['unit_price', 'discount_percentage', 'inventory', 'is_available', 'is_featured',
                      'collection']
     list_filter = ['collection']
@@ -32,7 +35,8 @@ class ProductAdmin(admin.ModelAdmin):
 
 @admin.register(Collection)
 class CollectionAdmin(admin.ModelAdmin):
-    list_display = ['title', 'products_count', 'created_at', 'updated_at']
+    list_display = ['title', 'products_count', 'created_at', 'updated_at', 'created_at_jalali', 'updated_at_jalali']
+    readonly_fields = ['created_at', 'updated_at', 'created_at_jalali', 'updated_at_jalali']
     search_fields = ['title']
     list_per_page = 10
 
@@ -53,12 +57,14 @@ class CollectionAdmin(admin.ModelAdmin):
 
 @admin.register(ProductComment)
 class ProductCommentAdmin(admin.ModelAdmin):
-    list_display = ['product', 'is_approved', 'created_at']
+    list_display = ['product', 'is_approved', 'created_at', 'created_at_jalali']
+    readonly_fields = ['created_at', 'created_at_jalali']
     list_editable = ['is_approved']
     list_filter = ['product']
 
 
 @admin.register(ProductRating)
 class ProductRatingAdmin(admin.ModelAdmin):
-    list_display = ['product', 'created_at']
+    list_display = ['product', 'created_at', 'updated_at', 'created_at_jalali', 'updated_at_jalali']
+    readonly_fields = ['created_at', 'updated_at', 'created_at_jalali', 'updated_at_jalali']
     list_filter = ['product']
