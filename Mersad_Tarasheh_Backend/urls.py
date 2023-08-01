@@ -33,6 +33,7 @@ urlpatterns = [
 
     path('customers/', include('authentication.urls')),
     path('carts/', include('cart.urls')),
+    path('orders/', include('order.urls')),
     path('store/', include('store.urls')),
 
     path('bankgateways/', az_bank_gateways_urls()),

@@ -22,6 +22,9 @@ class Cart(models.Model):
 
         super().save(*args, **kwargs)
 
+    def __str__(self):
+        return str(self.id)
+
     class Meta:
         verbose_name='سبد خرید'
         verbose_name_plural='سبدهای خرید'

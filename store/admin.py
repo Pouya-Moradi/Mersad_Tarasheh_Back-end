@@ -9,6 +9,7 @@ class ProductImageInline(admin.TabularInline):
     model = ProductImage
     readonly_fields = ['thumbnail']
 
+    @admin.display(ordering='thumbnail', description='پیش نمایش')
     def thumbnail(self, instance):
         if instance.image.name != '':
             return format_html(f'<img src="{instance.image.url}" class="thumbnail" />')
@@ -40,7 +41,7 @@ class CollectionAdmin(admin.ModelAdmin):
     search_fields = ['title']
     list_per_page = 10
 
-    @admin.display(ordering='products_count')
+    @admin.display(ordering='products_count', description='تعداد محصولات')
     def products_count(self, collection):
         url = reverse('admin:store_product_changelist') + '?' + urlencode(
             {

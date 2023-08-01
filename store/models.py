@@ -31,8 +31,8 @@ class Collection(models.Model):
 
     class Meta:
         ordering = ['title']
-        verbose_name='دسته بندی'
-        verbose_name_plural='دسته بندی ها'
+        verbose_name = 'دسته بندی'
+        verbose_name_plural = 'دسته بندی ها'
 
 
 class Product(models.Model):
@@ -48,7 +48,8 @@ class Product(models.Model):
 
     is_featured = models.BooleanField(default=False, verbose_name='سفارشی بودن')
 
-    collection = models.ForeignKey(Collection, on_delete=models.PROTECT, related_name='products', verbose_name='دسته بندی')
+    collection = models.ForeignKey(Collection, on_delete=models.PROTECT, related_name='products',
+                                   verbose_name='دسته بندی')
 
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='تاریخ ایجاد')
     updated_at = models.DateTimeField(auto_now=True, verbose_name='تاریخ به روزرسانی')
@@ -74,8 +75,8 @@ class Product(models.Model):
 
     class Meta:
         ordering = ['title']
-        verbose_name='محصول'
-        verbose_name_plural='محصولات'
+        verbose_name = 'محصول'
+        verbose_name_plural = 'محصولات'
 
 
 class ProductImage(models.Model):
@@ -83,8 +84,8 @@ class ProductImage(models.Model):
     image = models.ImageField(upload_to='store/images', verbose_name='تصویر')
 
     class Meta:
-        verbose_name='تصویر محصول'
-        verbose_name_plural='تصاویر محصول'
+        verbose_name = 'تصویر محصول'
+        verbose_name_plural = 'تصاویر محصول'
 
 
 class ProductComment(models.Model):
@@ -108,9 +109,12 @@ class ProductComment(models.Model):
 
         super().save(*args, **kwargs)
 
+    def __str__(self):
+        return f'{self.product.title} | {self.customer.__str__()}'
+
     class Meta:
-        verbose_name='نظر محصول'
-        verbose_name_plural='نظرات محصول'
+        verbose_name = 'نظر محصول'
+        verbose_name_plural = 'نظرات محصول'
 
 
 class ProductRating(models.Model):
@@ -139,7 +143,10 @@ class ProductRating(models.Model):
 
         super().save(*args, **kwargs)
 
+    def __str__(self):
+        return f'{self.product.title} | {self.customer.__str__()}'
+
     class Meta:
         unique_together = [['product', 'customer']]
-        verbose_name='امتیاز محصول'
-        verbose_name_plural='امتیازات محصول'
+        verbose_name = 'امتیاز محصول'
+        verbose_name_plural = 'امتیازات محصول'
