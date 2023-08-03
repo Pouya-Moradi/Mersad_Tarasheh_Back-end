@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import Collection, Product, ProductImage, ProductComment, ProductRating
+from authentication.models import Customer
 
 
 class CollectionSerializer(serializers.ModelSerializer):
@@ -59,7 +60,23 @@ class ProductRatingSerializer(serializers.ModelSerializer):
         read_only_fields = ['created_at', 'updated_at', 'created_at_jalali', 'updated_at_jalali']
 
 
-class UpdateProductRatingSerializer(serializers.ModelSerializer):
+class CreateOrUpdateProductRatingSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProductRating
-        fields = ['score']
+        fields = ['id', 'score', 'created_at', 'updated_at', 'created_at_jalali', 'updated_at_jalali']
+        read_only_fields = ['created_at', 'updated_at', 'created_at_jalali', 'updated_at_jalali']
+
+    def create(self, validated_data):
+        product_id = self.context['product_id']
+        user_id = self.context['user_id']
+
+        # Check if the user has already rated the product
+        try:
+            existing_rating = ProductRating.objects.get(product_id=product_id, customer__user_id=user_id)
+            existing_rating.score = validated_data['score']
+            existing_rating.save()
+            return existing_rating
+        except ProductRating.DoesNotExist:
+            # If the user hasn't rated the product, create a new rating
+            (customer, created) = Customer.objects.get_or_create(user_id=user_id)
+            return ProductRating.objects.create(product_id=product_id, customer=customer, **validated_data)
