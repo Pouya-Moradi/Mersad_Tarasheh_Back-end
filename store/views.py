@@ -41,7 +41,7 @@ class ProductCommentViewSet(ModelViewSet):
     serializer_class = ProductCommentSerializer
 
     def get_queryset(self):
-        return ProductComment.objects.filter(product_id=self.kwargs['product_pk'])
+        return ProductComment.objects.filter(product_id=self.kwargs['product_pk'], is_approved=True)
 
     def get_serializer_context(self):
         return {'product_id': self.kwargs['product_pk']}

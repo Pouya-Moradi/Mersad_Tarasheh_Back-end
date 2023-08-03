@@ -91,9 +91,11 @@ class ProductImage(models.Model):
 class ProductComment(models.Model):
     content = models.CharField(max_length=1024, verbose_name='متن نظر')
 
+    display_name = models.CharField(max_length=32, verbose_name='نام نمایشی')
+
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='comments', verbose_name='محصول')
 
-    customer = models.ForeignKey(Customer, on_delete=models.CASCADE, related_name='comments', verbose_name='مشتری')
+    # customer = models.ForeignKey(Customer, on_delete=models.CASCADE, related_name='comments', verbose_name='مشتری')
 
     is_approved = models.BooleanField(default=False, null=False, blank=False, verbose_name='وضعیت تایید')
 
@@ -110,7 +112,7 @@ class ProductComment(models.Model):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return f'{self.product.title} | {self.customer.__str__()}'
+        return f'{self.product.title} | {self.display_name}'
 
     class Meta:
         verbose_name = 'نظر محصول'

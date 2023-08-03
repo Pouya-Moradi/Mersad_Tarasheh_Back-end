@@ -58,7 +58,7 @@ class CollectionAdmin(admin.ModelAdmin):
 
 @admin.register(ProductComment)
 class ProductCommentAdmin(admin.ModelAdmin):
-    list_display = ['product', 'is_approved', 'created_at', 'created_at_jalali']
+    list_display = ['display_name', 'product', 'is_approved', 'created_at', 'created_at_jalali']
     readonly_fields = ['created_at', 'created_at_jalali']
     list_editable = ['is_approved']
     list_filter = ['product']
