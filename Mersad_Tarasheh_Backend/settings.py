@@ -10,7 +10,10 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
+import os
+from datetime import timedelta
 from pathlib import Path
+import pytz
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -37,9 +40,22 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'rest_framework',
+    'azbankgateways',
+    'djoser',
+    'corsheaders',
+    'drf_spectacular',
+
+    'authentication',
+    'cart',
+    'order',
+    'store',
+    'payments'
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -47,6 +63,17 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+]
+
+INTERNAL_IPS = [
+    #...
+    '127.0.0.1',
+    #...
+]
+
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:8001',
+    'http://127.0.0.1:8001',
 ]
 
 ROOT_URLCONF = 'Mersad_Tarasheh_Backend.urls'
@@ -75,8 +102,11 @@ WSGI_APPLICATION = 'Mersad_Tarasheh_Backend.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'mersad_tarasheh_db',
+        'HOST': 'localhost',
+        'USER': 'root',
+        'PASSWORD': 'pouya'
     }
 }
 
@@ -103,7 +133,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'fa-ir'
 
 TIME_ZONE = 'UTC'
 
@@ -117,7 +147,104 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+AUTH_USER_MODEL = 'authentication.User'
+
+TIME_ZONE = 'Asia/Tehran'
+
+REST_FRAMEWORK = {
+    'COERCE_DECIMAL_TO_STRING': False,
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+    'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}
+
+SIMPLE_JWT = {
+   'AUTH_HEADER_TYPES': ('JWT',),
+    "ACCESS_TOKEN_LIFETIME": timedelta(days=10),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=10)
+}
+
+DJOSER = {
+    'SERIALIZERS': {
+        'user_create': 'authentication.serializers.UserCreateSerializer',
+        'current_user': 'authentication.serializers.UserSerializer'
+    }
+}
+
+
+AZ_IRANIAN_BANK_GATEWAYS = {
+   'GATEWAYS': {
+       #بانک ملی
+       'BMI': {
+           'MERCHANT_CODE': '<YOUR MERCHANT CODE>',
+           'TERMINAL_CODE': '<YOUR TERMINAL CODE>',
+           'SECRET_KEY': '<YOUR SECRET CODE>',
+       },
+       #بانک سامان
+       'SEP': {
+           'MERCHANT_CODE': '<YOUR MERCHANT CODE>',
+           'TERMINAL_CODE': '<YOUR TERMINAL CODE>',
+       },
+       #زرین پال
+       'ZARINPAL': {
+           'MERCHANT_CODE': '<YOUR MERCHANT CODE>',
+           'SANDBOX': 0,  # 0 disable, 1 active
+       },
+       #آی دی پی
+       'IDPAY': {
+           'MERCHANT_CODE': '<YOUR MERCHANT CODE>',
+           'METHOD': 'POST',  # GET or POST
+           'X_SANDBOX': 0,  # 0 disable, 1 active
+       },
+       #زیبال
+       'ZIBAL': {
+           'MERCHANT_CODE': '<YOUR MERCHANT CODE>',
+       },
+       #باهمتا
+       'BAHAMTA': {
+           'MERCHANT_CODE': '<YOUR MERCHANT CODE>',
+       },
+       #بانک ملت
+       'MELLAT': {
+           'TERMINAL_CODE': '<YOUR TERMINAL CODE>',
+           'USERNAME': '<YOUR USERNAME>',
+           'PASSWORD': '<YOUR PASSWORD>',
+       },
+       #پی ورژن 1
+       'PAYV1': {
+           'MERCHANT_CODE': '<YOUR MERCHANT CODE>',
+           'X_SANDBOX': 0,  # 0 disable, 1 active
+       },
+   },
+   'IS_SAMPLE_FORM_ENABLE': True, # اختیاری و پیش فرض غیر فعال است
+   'DEFAULT': 'BMI',
+   'CURRENCY': 'IRR', # اختیاری
+   'TRACKING_CODE_QUERY_PARAM': 'tc', # اختیاری
+   'TRACKING_CODE_LENGTH': 16, # اختیاری
+   'SETTING_VALUE_READER_CLASS': 'azbankgateways.readers.DefaultReader', # اختیاری
+   'BANK_PRIORITIES': [
+       'BMI',
+       'SEP',
+       # and so on ...
+   ], # اختیاری
+   'IS_SAFE_GET_GATEWAY_PAYMENT': False, #اختیاری، بهتر است True بزارید.
+   'CUSTOM_APP': None, # اختیاری
+}
+
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Mersad Tarasheh APIs',
+    # 'DESCRIPTION': 'Your project description',
+    # 'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+    # OTHER SETTINGS
+}
