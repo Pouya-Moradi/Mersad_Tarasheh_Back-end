@@ -39,13 +39,13 @@ class CreateOrderSerializer(serializers.Serializer):
             customer = Customer.objects.get(user_id=self.context['user_id'])
             order = Order.objects.create(customer=customer)
 
-            cart_items = CartItem.objects.select_related('product').filter(cart_id)
+            cart_items = CartItem.objects.select_related('product').filter(cart_id=self.validated_data['cart_id'])
             order_items = [
                 OrderItem
                     (
                     order=order,
                     product=cart_item.product,
-                    unit_price=cart_item.unit_price,
+                    unit_price=cart_item.product.unit_price,
                     quantity=cart_item.quantity
                 )
                 for cart_item in cart_items
