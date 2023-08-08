@@ -68,6 +68,9 @@ class Product(models.Model):
             now_jdatetime = jdatetime_datetime.fromgregorian(datetime=now_local)
             self.updated_at_jalali = now_jdatetime.strftime('%Y/%m/%d %H:%M:%S')
 
+        if self.inventory == 0:
+            self.is_available = False;
+
         super().save(*args, **kwargs)
 
     def __str__(self):

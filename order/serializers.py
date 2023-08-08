@@ -40,16 +40,21 @@ class CreateOrderSerializer(serializers.Serializer):
             order = Order.objects.create(customer=customer)
 
             cart_items = CartItem.objects.select_related('product').filter(cart_id=self.validated_data['cart_id'])
-            order_items = [
-                OrderItem
-                    (
+
+            order_items = []
+            for cart_item in cart_items:
+                product = cart_item.product
+                order_item = OrderItem(
                     order=order,
-                    product=cart_item.product,
-                    unit_price=cart_item.product.unit_price,
+                    product=product,
+                    unit_price=product.unit_price,
                     quantity=cart_item.quantity
                 )
-                for cart_item in cart_items
-            ]
+                order_items.append(order_item)
+
+                # Decrease product inventory
+                product.inventory -= cart_item.quantity
+                product.save()
 
             OrderItem.objects.bulk_create(order_items)
 

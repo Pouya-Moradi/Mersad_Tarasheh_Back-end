@@ -1,3 +1,4 @@
+from django.core.validators import MinValueValidator
 from rest_framework import serializers
 from .models import Cart, CartItem
 from store.models import Product
@@ -32,10 +33,20 @@ class CartSerializer(serializers.ModelSerializer):
 
 class AddCartItemSerializer(serializers.ModelSerializer):
     product_id = serializers.IntegerField()
+    quantity = serializers.IntegerField()
 
     def validate_product_id(self, value):
         if not Product.objects.filter(pk=value):
             raise serializers.ValidationError('No product with the given ID was found')
+        return value
+
+    def validate_quantity(self, value):
+        product_id = self.initial_data.get('product_id')  # Access from initial_data
+        product = Product.objects.get(pk=product_id)
+
+        if value > product.inventory:
+            raise serializers.ValidationError(f"Requested quantity exceeds available inventory for {product.title}.")
+
         return value
 
     def save(self, **kwargs):
