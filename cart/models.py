@@ -15,8 +15,8 @@ class Cart(models.Model):
     created_at_jalali = models.CharField(max_length=32, verbose_name='تاریخ شمسی ایجاد')
 
     def save(self, *args, **kwargs):
-        if not self.id:
-            now_local = timezone.localtime(timezone.now())
+        if not self.created_at_jalali:
+            now_local = timezone.localtime(self.created_at)
             now_jdatetime = jdatetime_datetime.fromgregorian(datetime=now_local)
             self.created_at_jalali = now_jdatetime.strftime('%Y/%m/%d %H:%M:%S')
 
