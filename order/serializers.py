@@ -33,6 +33,16 @@ class CreateOrderSerializer(serializers.Serializer):
             raise serializers.ValidationError('The cart is empty.')
         return cart_id
 
+    def validate(self, data):
+        cart_id = data['cart_id']
+        cart_items = CartItem.objects.select_related('product').filter(cart_id=cart_id)
+
+        for cart_item in cart_items:
+            product = cart_item.product
+            if cart_item.quantity > product.inventory:
+                raise serializers.ValidationError(f"Requested quantity for product {product.title} exceeds available inventory.")
+        return data
+
     def save(self, **kwargs):
         with transaction.atomic():
             cart_id = self.validated_data['cart_id']
