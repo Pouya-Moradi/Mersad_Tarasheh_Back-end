@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from django.utils.translation import gettext_lazy as _
 from jdatetime import datetime as jdatetime_datetime
 from store.models import Product
 from authentication.models import Customer
@@ -14,9 +15,9 @@ class Order(models.Model):
     PAYMENT_STATUS_FAILED = 'F'
 
     PAYMENT_STATUS_CHOICES = [
-        (PAYMENT_STATUS_PENDING, 'Pending'),
-        (PAYMENT_STATUS_COMPLETED, 'Completed'),
-        (PAYMENT_STATUS_FAILED, 'Failed')
+        (PAYMENT_STATUS_PENDING, _('در انتظار')),
+        (PAYMENT_STATUS_COMPLETED, _('تکمیل شده')),
+        (PAYMENT_STATUS_FAILED, _('ناموفق'))
     ]
 
     payment_status = models.CharField(max_length=1, choices=PAYMENT_STATUS_CHOICES, default=PAYMENT_STATUS_PENDING,
