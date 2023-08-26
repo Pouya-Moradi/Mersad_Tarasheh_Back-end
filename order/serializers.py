@@ -19,12 +19,17 @@ class OrderSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Order
-        fields = ['id', 'payment_status', 'order_items', 'created_at', 'updated_at', 'created_at_jalali',
-                  'updated_at_jalali']
+        fields = ['id', 'state', 'city', 'address', 'zip_code', 'payment_status', 'order_items', 'created_at',
+                  'updated_at',
+                  'created_at_jalali', 'updated_at_jalali']
 
 
 class CreateOrderSerializer(serializers.Serializer):
     cart_id = serializers.UUIDField()
+    state = serializers.CharField(max_length=32)
+    city = serializers.CharField(max_length=32)
+    address = serializers.CharField(max_length=256)
+    zip_code = serializers.CharField(max_length=10)
 
     def validate_cart_id(self, cart_id):
         if not Cart.objects.filter(pk=cart_id).exists():
@@ -40,14 +45,20 @@ class CreateOrderSerializer(serializers.Serializer):
         for cart_item in cart_items:
             product = cart_item.product
             if cart_item.quantity > product.inventory:
-                raise serializers.ValidationError(f"Requested quantity for product {product.title} exceeds available inventory.")
+                raise serializers.ValidationError(
+                    f"Requested quantity for product {product.title} exceeds available inventory.")
         return data
 
     def save(self, **kwargs):
         with transaction.atomic():
             cart_id = self.validated_data['cart_id']
+            state = self.validated_data['state']
+            city = self.validated_data['city']
+            address = self.validated_data['address']
+            zip_code = self.validated_data['zip_code']
+
             customer = Customer.objects.get(user_id=self.context['user_id'])
-            order = Order.objects.create(customer=customer)
+            order = Order.objects.create(customer=customer, state=state, city=city, address=address, zip_code=zip_code)
 
             cart_items = CartItem.objects.select_related('product').filter(cart_id=self.validated_data['cart_id'])
 

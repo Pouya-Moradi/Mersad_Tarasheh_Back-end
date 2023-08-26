@@ -72,9 +72,12 @@ INTERNAL_IPS = [
 ]
 
 CORS_ALLOWED_ORIGINS = [
-    'http://localhost:8001',
-    'http://127.0.0.1:8001',
+    'http://localhost:5173',
+    'http://127.0.0.1:5173',
 ]
+
+# ALLOWED_HOSTS=['*']
+# CORS_ORIGIN_ALLOW_ALL = True
 
 ROOT_URLCONF = 'Mersad_Tarasheh_Backend.urls'
 

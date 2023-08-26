@@ -14,7 +14,7 @@ class UserAdmin(BaseUserAdmin):
             None,
             {
                 'classes': ('wide',),
-                'fields': ('username', 'password1', 'password2', 'email', 'phone_number', 'first_name', 'last_name'),
+                'fields': ('username', 'password1', 'password2', 'email', 'phone_number'),
             },
         ),
     )
@@ -23,12 +23,12 @@ class UserAdmin(BaseUserAdmin):
 @admin.register(Customer)
 class CustomerAdmin(admin.ModelAdmin):
     autocomplete_fields = ['user']
-    list_display = ['first_name', 'last_name', 'display_name', 'state', 'city', 'orders_count', 'created_at',
+    list_display = ['username', 'orders_count', 'created_at',
                     'updated_at', 'created_at_jalali', 'updated_at_jalali']
     readonly_fields = ['created_at', 'updated_at', 'created_at_jalali', 'updated_at_jalali']
     list_select_related = ['user']
-    ordering = ['user__first_name', 'user__last_name']
-    search_fields = ['user__first_name__istartswith', 'user__last_name__istartswith']
+    # ordering = ['user__first_name', 'user__last_name']
+    # search_fields = ['user__first_name__istartswith', 'user__last_name__istartswith']
     list_per_page = 10
 
     @admin.display(ordering='orders_count')

@@ -10,6 +10,11 @@ class Order(models.Model):
 
     customer = models.ForeignKey(Customer, on_delete=models.PROTECT, related_name='orders', verbose_name='مشتری')
 
+    state = models.CharField(max_length=32, verbose_name='استان')
+    city = models.CharField(max_length=32, verbose_name='شهر')
+    address = models.CharField(max_length=256, verbose_name='آدرس')
+    zip_code = models.CharField(max_length=10, null=True, blank=True, verbose_name='کد پستی')
+
     PAYMENT_STATUS_PENDING = 'P'
     PAYMENT_STATUS_COMPLETED = 'C'
     PAYMENT_STATUS_FAILED = 'F'
